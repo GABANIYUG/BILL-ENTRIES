@@ -62,20 +62,31 @@ export default function Dashboard() {
     formData.append('file', file);
 
     try {
-      const res = await fetch('/api/upload', {
+      const res = await fetch('/api/convert', {
         method: 'POST',
         body: formData,
       });
-      const data = await res.json();
-      if (data.success) {
+      
+      if (res.ok) {
+        // We get the raw Excel file blob directly from the response
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        
+        // Trigger download programmatically
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Tally_Export_${file.name.replace('.pdf', '')}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+
         setStatus('success');
-        setMessage('Processing complete! Downloading your Tally Excel file...');
-        setTimeout(() => {
-          window.location.href = `/api/export/${data.documentId}`;
-        }, 1000);
+        setMessage('Success! Your Excel file is downloading.');
       } else {
+        const errorData = await res.json().catch(() => ({ error: 'Unknown server error' }));
         setStatus('error');
-        setMessage('Upload failed: ' + data.error);
+        setMessage('Upload failed: ' + errorData.error);
       }
     } catch (err) {
       setStatus('error');
