@@ -1,0 +1,66 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  documents     Document[]
+}
+
+model Document {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fileName  String
+  fileUrl   String
+  status    String   @default("PENDING") // PENDING, PROCESSING, COMPLETED, FAILED
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  invoices  Invoice[]
+}
+
+model Invoice {
+  id              String   @id @default(cuid())
+  documentId      String
+  document        Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  invoiceText     String?  // the text for this specific segment
+  confidenceScore Float?
+  isAiFallback    Boolean  @default(false)
+  
+  // Invoice Level Extracted Data
+  voucherDate        String?
+  voucherNumber      String?
+  buyerName          String?
+  buyerState         String?
+  buyerGSTIN         String?
+  
+  items              InvoiceItem[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model InvoiceItem {
+  id                 String  @id @default(cuid())
+  invoiceId          String
+  invoice            Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  
+  itemName           String?
+  qty                Float?
+  rate               Float?
+  taxable            Float?
+  igstAmount         Float?
+  cgstAmount         Float?
+  sgstAmount         Float?
+  totalInvoiceAmount Float?
+  roundOffAmount     Float?
+}
