@@ -1,4 +1,4 @@
-import { InvoiceData, InvoiceItemData } from './tally-mapper';
+import { InvoiceData } from './tally-mapper';
 
 function cleanAmount(val: string | undefined): number {
   if (!val) return 0;

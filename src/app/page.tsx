@@ -12,7 +12,6 @@ function cn(...inputs: ClassValue[]) {
 
 export default function Dashboard() {
   const [file, setFile] = useState<File | null>(null);
-  const [uploading, setUploading] = useState(false);
   const [status, setStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
   const [isDragActive, setIsDragActive] = useState(false);
@@ -54,7 +53,6 @@ export default function Dashboard() {
 
   const handleUpload = async () => {
     if (!file) return;
-    setUploading(true);
     setStatus('processing');
     setMessage('Parsing invoice data...');
     
@@ -88,11 +86,9 @@ export default function Dashboard() {
         setStatus('error');
         setMessage('Upload failed: ' + errorData.error);
       }
-    } catch (err) {
+    } catch {
       setStatus('error');
       setMessage('A network error occurred while uploading.');
-    } finally {
-      setUploading(false);
     }
   };
 

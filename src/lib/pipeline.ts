@@ -18,7 +18,7 @@ export async function processPdfPipeline(buffer: Buffer): Promise<InvoiceData[]>
   
   for (const textSegment of segmentedTexts) {
     // Step 3: Deterministic Extraction
-    let extracted = extractDeterministicFields(textSegment);
+    const extracted = extractDeterministicFields(textSegment);
     
     // Step 4: Confidence Score (for user awareness only)
     const score = calculateConfidence(extracted);

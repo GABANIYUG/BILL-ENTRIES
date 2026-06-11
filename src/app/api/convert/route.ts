@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Convert API error:', error);
     return NextResponse.json({ error: error.message || 'Conversion failed' }, { status: 500 });
   }
