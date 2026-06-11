@@ -5,20 +5,26 @@ import { calculateConfidence } from './confidence';
 import { InvoiceData } from './tally-mapper';
 
 export async function processPdfPipeline(buffer: Buffer): Promise<{ invoices: InvoiceData[], rawText: string }> {
-  // Step 1: Extract full text
-  const fullText = await extractTextFromPdfBuffer(buffer);
+  // Step 1: Extract full text using both strategies
+  const { textStandard, textMerged } = await extractTextFromPdfBuffer(buffer);
   
-  if (fullText.trim().length < 50) {
+  if (textStandard.trim().length < 50) {
     console.log('PDF seems scanned or empty.');
   }
   
   // Step 2: Segmentation
-  const segmentedTexts = segmentPdfText(fullText);
+  const segmentsStandard = segmentPdfText(textStandard);
+  const segmentsMerged = segmentPdfText(textMerged);
+  
   const finalInvoices: InvoiceData[] = [];
   
-  for (const textSegment of segmentedTexts) {
+  // Use the length of the standard segments as the source of truth
+  for (let i = 0; i < segmentsStandard.length; i++) {
+    const textSegmentStandard = segmentsStandard[i];
+    const textSegmentMerged = segmentsMerged[i] || ''; // Fallback to empty string if misalignment
+    
     // Step 3: Deterministic Extraction
-    const extracted = extractDeterministicFields(textSegment);
+    const extracted = extractDeterministicFields(textSegmentStandard, textSegmentMerged);
     
     // Step 4: Confidence Score (for user awareness only)
     const score = calculateConfidence(extracted);
@@ -35,5 +41,5 @@ export async function processPdfPipeline(buffer: Buffer): Promise<{ invoices: In
     });
   }
   
-  return { invoices: finalInvoices, rawText: fullText };
+  return { invoices: finalInvoices, rawText: `--- STANDARD PARSE ---\n${textStandard}\n\n--- MERGED PARSE ---\n${textMerged}` };
 }

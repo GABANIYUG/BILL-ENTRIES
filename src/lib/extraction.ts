@@ -5,10 +5,12 @@ function cleanAmount(val: string | undefined): number {
   return parseFloat(val.replace(/,/g, '')) || 0;
 }
 
-export function extractDeterministicFields(text: string): Partial<InvoiceData> {
+export function extractDeterministicFields(textStandard: string, textMerged: string = ''): Partial<InvoiceData> {
   const extracted: Partial<InvoiceData> = {
     items: []
   };
+
+  const text = textStandard; // Use standard text for all globals
 
   // 1. Invoice Number Extraction
   // Matches "Invoice No", "Inv No", "Bill No", "Tax Invoice Number", etc.
@@ -81,80 +83,87 @@ export function extractDeterministicFields(text: string): Partial<InvoiceData> {
     return Math.max(...amounts);
   }
 
-  // 6. Line Item Parsing (Heuristic Table Parser)
-  // Scan every line for a line item signature. We don't rely on 'inTable' because headers vary wildly.
-  const lines = text.split('\n');
-  let parsedItems = 0;
+  function attemptLineItemParsing(targetText: string): number {
+    const lines = targetText.split('\n');
+    let parsedCount = 0;
 
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i].trim();
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
 
-    // 1. Specific row match for Qty, Rate, Discount, Amount, Taxes
-    const specificRowMatch = line.match(/^(?:\d+\s+)?([A-Za-z0-9\s\-\.\&_\/\|]+?)\s+(\d+(?:\.\d{1,3})?)\s+([0-9,]+\.\d{2})\s+([0-9,]+\.\d{2})\s+([0-9,]+\.\d{2})\s+([0-9,]+\.\d{2})/);
-    
-    // 2. Standard row: Description HSN Qty Rate Amount
-    const rowMatch = line.match(/^([A-Za-z0-9\s\-\.]+?)\s+(\d{4,8})?\s*(\d+(?:\.\d+)?)\s+([0-9,]+\.[0-9]{2})\s+([0-9,]+\.[0-9]{2})$/);
-    
-    // 3. Textile row: [SrNo] Description HSN TAKA MTRS Rate Amount
-    const textileRowMatch = line.match(/^(?:\d+)?\s*([A-Za-z0-9\s\-\.]+?)\s+(\d{4,8})?\s+(\d+(?:\.\d+)?)\s+([0-9,]+(?:\.\d{2})?)\s+([0-9,]+\.[0-9]{2})\s+([0-9,]+\.[0-9]{2})$/);
-    
-    // 4. Glued text row (when pdf-parse drops spaces): DescMTRSRATEAMOUNTTAKAhsn
-    const gluedRowMatch = line.match(/^([A-Za-z\s\&]+?)(\d+\.\d{2})(\d+\.\d{2})([0-9,]+\.\d{2})(\d+)(\d{4,8})$/i);
-    
-    let desc, qty, rate, amount;
-    if (specificRowMatch) {
-      desc = specificRowMatch[1].trim();
-      qty = cleanAmount(specificRowMatch[2]);
-      rate = cleanAmount(specificRowMatch[3]);
-      // specificRowMatch[4] is Discount, [5] is Amount
-      amount = cleanAmount(specificRowMatch[5]);
-    } else if (gluedRowMatch) {
-      desc = gluedRowMatch[1].trim();
-      qty = cleanAmount(gluedRowMatch[2]);
-      rate = cleanAmount(gluedRowMatch[3]);
-      amount = cleanAmount(gluedRowMatch[4]);
-    } else if (textileRowMatch) {
-      desc = textileRowMatch[1].trim();
-      // textileRowMatch[3] is TAKA, [4] is MTRS (Qty)
-      qty = cleanAmount(textileRowMatch[4]);
-      rate = cleanAmount(textileRowMatch[5]);
-      amount = cleanAmount(textileRowMatch[6]);
-    } else if (rowMatch) {
-      desc = rowMatch[1].trim();
-      qty = cleanAmount(rowMatch[3]);
-      rate = cleanAmount(rowMatch[4]);
-      amount = cleanAmount(rowMatch[5]);
+      // 1. Specific row match for Qty, Rate, Discount, Amount, Taxes
+      const specificRowMatch = line.match(/^(?:\d+\s+)?([A-Za-z0-9\s\-\.\&_\/\|]+?)\s+(\d+(?:\.\d{1,3})?)\s+([0-9,]+\.\d{2})\s+([0-9,]+\.\d{2})\s+([0-9,]+\.\d{2})\s+([0-9,]+\.\d{2})/);
+      
+      // 2. Standard row: Description HSN Qty Rate Amount
+      const rowMatch = line.match(/^([A-Za-z0-9\s\-\.]+?)\s+(\d{4,8})?\s*(\d+(?:\.\d+)?)\s+([0-9,]+\.[0-9]{2})\s+([0-9,]+\.[0-9]{2})$/);
+      
+      // 3. Textile row: [SrNo] Description HSN TAKA MTRS Rate Amount
+      const textileRowMatch = line.match(/^(?:\d+)?\s*([A-Za-z0-9\s\-\.]+?)\s+(\d{4,8})?\s+(\d+(?:\.\d+)?)\s+([0-9,]+(?:\.\d{2})?)\s+([0-9,]+\.[0-9]{2})\s+([0-9,]+\.[0-9]{2})$/);
+      
+      // 4. Glued text row (when pdf-parse drops spaces): DescMTRSRATEAMOUNTTAKAhsn
+      const gluedRowMatch = line.match(/^([A-Za-z\s\&]+?)(\d+\.\d{2})(\d+\.\d{2})([0-9,]+\.\d{2})(\d+)(\d{4,8})$/i);
+      
+      let desc, qty, rate, amount;
+      if (specificRowMatch) {
+        desc = specificRowMatch[1].trim();
+        qty = cleanAmount(specificRowMatch[2]);
+        rate = cleanAmount(specificRowMatch[3]);
+        // specificRowMatch[4] is Discount, [5] is Amount
+        amount = cleanAmount(specificRowMatch[5]);
+      } else if (gluedRowMatch) {
+        desc = gluedRowMatch[1].trim();
+        qty = cleanAmount(gluedRowMatch[2]);
+        rate = cleanAmount(gluedRowMatch[3]);
+        amount = cleanAmount(gluedRowMatch[4]);
+      } else if (textileRowMatch) {
+        desc = textileRowMatch[1].trim();
+        // textileRowMatch[3] is TAKA, [4] is MTRS (Qty)
+        qty = cleanAmount(textileRowMatch[4]);
+        rate = cleanAmount(textileRowMatch[5]);
+        amount = cleanAmount(textileRowMatch[6]);
+      } else if (rowMatch) {
+        desc = rowMatch[1].trim();
+        qty = cleanAmount(rowMatch[3]);
+        rate = cleanAmount(rowMatch[4]);
+        amount = cleanAmount(rowMatch[5]);
+      }
+      
+      // Skip if the extracted description looks like a totals row
+      if (desc && desc.match(/^(?:Total|Amount|CGST|SGST|IGST|Net|Basic|Taxable|Subtotal)/i)) {
+        continue;
+      }
+      
+      if (desc && qty && rate && amount) {
+        extracted.items?.push({
+          itemName: desc,
+          qty: qty,
+          rate: rate,
+          taxable: amount, // temporary, used for ratio calculation
+          igstAmount: 0, 
+          cgstAmount: 0,
+          sgstAmount: 0,
+          totalInvoiceAmount: amount, // temporary
+          roundOffAmount: 0
+        });
+        parsedCount++;
+      }
     }
-    
-    // Skip if the extracted description looks like a totals row
-    if (desc && desc.match(/^(?:Total|Amount|CGST|SGST|IGST|Net|Basic|Taxable|Subtotal)/i)) {
-      continue;
-    }
-    
-    if (desc && qty && rate && amount) {
-      extracted.items?.push({
-        itemName: desc,
-        qty: qty,
-        rate: rate,
-        taxable: amount, // temporary, used for ratio calculation
-        igstAmount: 0, 
-        cgstAmount: 0,
-        sgstAmount: 0,
-        totalInvoiceAmount: amount, // temporary
-        roundOffAmount: 0
-      });
-      parsedItems++;
-    }
+    return parsedCount;
   }
 
-
+  // Try standard parsing first
+  let parsedItems = attemptLineItemParsing(textStandard);
+  
+  // If standard failed, try merged parsing
+  if (parsedItems === 0 && textMerged) {
+    parsedItems = attemptLineItemParsing(textMerged);
+  }
 
   // 7. Global Regex Fallback for Line Items
   // If line-by-line parsing failed because of PDF formatting, we run a global search
   // looking for the exact sequence of numbers for this specific invoice type.
-  if (parsedItems === 0) {
+  if (parsedItems === 0 && textMerged) {
     // Looks for: [Optional Sr No] [Item Name] [Qty] [Optional Unit] [Rate] [Optional Discount] [Amount] [Optional Taxes]
-    const globalMatches = Array.from(text.matchAll(/(?:^|\n)\s*(?:\d{1,3}\s+)?([A-Za-z0-9][\s\S]{4,150}?)\s+(\d+(?:\.\d{1,3})?)(?:\s+(?:Mtrs?|Pcs|Kgs?|Nos?|Units?|Mtr|Pieces|Meters|Rolls?))?\s+([0-9,]{1,8}\.\d{2})\s+(?:([0-9,]{1,8}\.\d{2})(?:\s*\(\d+%\))?\s+)?([0-9,]{1,12}\.\d{2})(?:\s+([0-9,]{1,12}\.\d{2})(?:\s*\(\d+%\))?)?/gi));
+    const globalMatches = Array.from(textMerged.matchAll(/(?:^|\n)\s*(?:\d{1,3}\s+)?([A-Za-z0-9][\s\S]{4,150}?)\s+(\d+(?:\.\d{1,3})?)(?:\s+(?:Mtrs?|Pcs|Kgs?|Nos?|Units?|Mtr|Pieces|Meters|Rolls?))?\s+([0-9,]{1,8}\.\d{2})\s+(?:([0-9,]{1,8}\.\d{2})(?:\s*\(\d+%\))?\s+)?([0-9,]{1,12}\.\d{2})(?:\s+([0-9,]{1,12}\.\d{2})(?:\s*\(\d+%\))?)?/gi));
     
     for (const match of globalMatches) {
       let desc = match[1].replace(/\n/g, ' ').replace(/Item\s+Qty\s+Rate.*?Total\s*/i, '').trim();
