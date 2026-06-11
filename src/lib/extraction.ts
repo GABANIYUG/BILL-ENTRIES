@@ -196,10 +196,10 @@ export function extractDeterministicFields(text: string): Partial<InvoiceData> {
   // looking for the exact sequence of numbers for this specific invoice type.
   if (parsedItems === 0) {
     // Looks for: [Optional Sr No] [Item Name] [Qty] [Optional Unit] [Rate] [Optional Discount] [Amount] [Optional Taxes]
-    const globalMatches = Array.from(text.matchAll(/(?:^|\n)\s*(?:\d{1,3}\s+)?([A-Za-z0-9\-\.\&_\/\|][A-Za-z0-9\-\.\&_\/\|\s\:]{5,80}?)\s+(\d+(?:\.\d{1,3})?)(?:\s+(?:Mtrs?|Pcs|Kgs?|Nos?|Units?|Mtr|Pieces|Meters|Rolls?))?\s+([0-9,]{1,8}\.\d{2})\s+(?:([0-9,]{1,8}\.\d{2})\s+)?([0-9,]{1,12}\.\d{2})(?:\s+([0-9,]{1,12}\.\d{2}))?/gi));
+    const globalMatches = Array.from(text.matchAll(/(?:^|\n)\s*(?:\d{1,3}\s+)?([A-Za-z0-9][\s\S]{4,150}?)\s+(\d+(?:\.\d{1,3})?)(?:\s+(?:Mtrs?|Pcs|Kgs?|Nos?|Units?|Mtr|Pieces|Meters|Rolls?))?\s+([0-9,]{1,8}\.\d{2})\s+(?:([0-9,]{1,8}\.\d{2})(?:\s*\(\d+%\))?\s+)?([0-9,]{1,12}\.\d{2})(?:\s+([0-9,]{1,12}\.\d{2})(?:\s*\(\d+%\))?)?/gi));
     
     for (const match of globalMatches) {
-      const desc = match[1].replace(/\n/g, ' ').trim();
+      let desc = match[1].replace(/\n/g, ' ').replace(/Item\s+Qty\s+Rate.*?Total\s*/i, '').trim();
       if (desc.match(/^(?:Total|Amount|CGST|SGST|IGST|Net|Basic|Taxable|Subtotal)/i)) continue;
       
       const qty = cleanAmount(match[2]);
