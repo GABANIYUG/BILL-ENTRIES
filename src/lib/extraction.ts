@@ -223,24 +223,37 @@ export function extractDeterministicFields(text: string): Partial<InvoiceData> {
         parsedItems++;
       }
     }
-    
-    // If we found items globally, distribute taxes just like we did above
-    if (parsedItems > 0 && extracted.items && extracted.items.length > 0) {
-      const totalTaxableBase = extracted.items.reduce((sum, item) => sum + (item.taxable || 0), 0);
-      if (totalTaxableBase > 0) {
-        for (const item of extracted.items) {
-          const baseAmount = item.taxable || 0;
-          const ratio = baseAmount / totalTaxableBase;
-          item.igstAmount = Number(((taxTotals.igst || 0) * ratio).toFixed(2));
-          item.cgstAmount = Number(((taxTotals.cgst || 0) * ratio).toFixed(2));
-          item.sgstAmount = Number(((taxTotals.sgst || 0) * ratio).toFixed(2));
-          item.taxable = Number((item.igstAmount + item.cgstAmount + item.sgstAmount).toFixed(2));
-          item.totalInvoiceAmount = baseAmount;
-        }
-        extracted.items[extracted.items.length - 1].roundOffAmount = taxTotals.roundOff || 0;
-      }
-    }
   }
+
+    // 6. Extract Tax Totals globally as a fallback / verifier
+    const taxTotals = {
+      igst: extractMaxTax('IGST'),
+      cgst: extractMaxTax('CGST'),
+      sgst: extractMaxTax('SGST'),
+      taxable: cleanAmount(text.match(/(?:Taxable\s+Amount|Taxable|Basic\s+Amount|Total\s+Basic)[^\d\n]*([0-9,]+\.[0-9]{2})/i)?.[1]),
+      roundOff: extractMaxTax('Round\\s*off')
+    };
+    
+    // Also extract negative round off
+    const negRoundOffMatch = text.match(/Round\s*off[^\d\n\-]{0,25}(-?[0-9,]+\.[0-9]{2})/i);
+    if (negRoundOffMatch && negRoundOffMatch[1].includes('-')) {
+      taxTotals.roundOff = cleanAmount(negRoundOffMatch[1]);
+    }
+    
+    const grandTotal = cleanAmount(text.match(/(?:Grand\s+Total|Total\s+Invoice\s+Value|Net\s+payable|Net\s+Amount)[^\d\n]*([0-9,]+\.[0-9]{2})/i)?.[1]);
+
+    // Apply exact invoice-level totals to each line item based on user request
+    if (parsedItems > 0 && extracted.items && extracted.items.length > 0) {
+      for (const item of extracted.items) {
+        item.igstAmount = taxTotals.igst || 0;
+        item.cgstAmount = taxTotals.cgst || 0;
+        item.sgstAmount = taxTotals.sgst || 0;
+        // User requested: "net payable is the total invoice amount"
+        item.totalInvoiceAmount = grandTotal || 0;
+        // Keep item.taxable as the line item amount (amount before taxes)
+      }
+      extracted.items[extracted.items.length - 1].roundOffAmount = taxTotals.roundOff || 0;
+    } else { }
 
   // 8. Final Dummy Item Fallback
   if (parsedItems === 0) {
@@ -258,7 +271,7 @@ export function extractDeterministicFields(text: string): Partial<InvoiceData> {
       igstAmount: igst,
       cgstAmount: cgst,
       sgstAmount: sgst,
-      totalInvoiceAmount: baseValue,
+      totalInvoiceAmount: grandTotal || baseValue,
       roundOffAmount: taxTotals.roundOff || 0
     });
   }
