@@ -49,7 +49,7 @@ export function extractDeterministicFields(text: string): Partial<InvoiceData> {
   const allGstins = Array.from(text.matchAll(gstinRegex)).map(m => m[1]);
   
   // Try to specifically target Buyer GSTIN
-  const buyerBlockMatch = text.match(/(?:Buyer|Bill To|Party|Customer|Consignee|M\/s\.?)[\s\S]{0,150}?(?:GSTIN|GST)[\s:]*([0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1})\b/i);
+  const buyerBlockMatch = text.match(/(?:Buyer|Bill\s+To|Party|Customer|Consignee|M\/s\.?)[\s\S]{0,350}?(?:GSTIN|GST)[\s:]*([0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1})\b/i);
   if (buyerBlockMatch) {
     extracted.buyerGSTIN = buyerBlockMatch[1];
   } else if (allGstins.length > 1) {
@@ -59,7 +59,7 @@ export function extractDeterministicFields(text: string): Partial<InvoiceData> {
   }
 
   // Buyer Name Extraction
-  const buyerNameMatch = text.match(/(?:M\/s\.?|Buyer|Bill To|Party|Customer|Delivery Party)[\s:]*([A-Za-z0-9\s\&\.]+)/i);
+  const buyerNameMatch = text.match(/(?:M\/s\.?|Buyer|Bill\s+To|Party|Customer|Delivery\s+Party)[\s:]*([A-Za-z0-9\s\&\.\-\(\)]+)/i);
   if (buyerNameMatch) {
     // Only take the first line of the name if it matched too much
     extracted.buyerName = buyerNameMatch[1].split(/[\r\n]/)[0].trim();
@@ -88,7 +88,8 @@ export function extractDeterministicFields(text: string): Partial<InvoiceData> {
     igst: cleanAmount(text.match(/(?:Total\s+IGST|IGST\s+Amount|IGST)[\s:]*(?:\d+(?:\.\d+)?\s*%)?[\s:]*(?:Rs\.?)?\s*([0-9,]+\.[0-9]{2})/i)?.[1]),
     cgst: cleanAmount(text.match(/(?:Total\s+CGST|CGST\s+Amount|CGST)[\s:]*(?:\d+(?:\.\d+)?\s*%)?[\s:]*(?:Rs\.?)?\s*([0-9,]+\.[0-9]{2})/i)?.[1]),
     sgst: cleanAmount(text.match(/(?:Total\s+SGST|Total\s+UTGST|SGST\s+Amount|SGST)[\s:]*(?:\d+(?:\.\d+)?\s*%)?[\s:]*(?:Rs\.?)?\s*([0-9,]+\.[0-9]{2})/i)?.[1]),
-    taxable: cleanAmount(text.match(/(?:Total\s+Taxable\s+Value|Total\s+Value|Taxable\s+Amount|Taxable)[\s:]*(?:Rs\.?)?\s*([0-9,]+\.[0-9]{2})/i)?.[1])
+    taxable: cleanAmount(text.match(/(?:Total\s+Taxable\s+Value|Total\s+Value|Taxable\s+Amount|Taxable|Basic\s+Amount)[\s:]*(?:Rs\.?)?\s*([0-9,]+\.[0-9]{2})/i)?.[1]),
+    roundOff: cleanAmount(text.match(/(?:Round\s*off|Roundoff)[\s:]*(?:Rs\.?|\u20B9)?\s*([\-0-9,]+\.[0-9]{2})/i)?.[1])
   };
 
   // 6. Line Item Parsing (Heuristic Table Parser)
@@ -106,21 +107,30 @@ export function extractDeterministicFields(text: string): Partial<InvoiceData> {
 
     if (inTable) {
       // Break if we hit totals
-      if (line.match(/(?:Total|Amount|CGST|SGST|IGST)/i) && !line.match(/^[0-9]/)) {
+      if (line.match(/(?:Total|Amount|CGST|SGST|IGST|Net\s+payable|Basic\s+Amount)/i) && !line.match(/^[0-9]/)) {
         break;
       }
 
-      // 1. Standard row: Description HSN Qty Rate Amount
+      // 1. Specific row match for Qty, Rate, Discount, Amount, Taxes
+      const specificRowMatch = line.match(/^(?:\d+\s+)?([A-Za-z0-9\s\-\.\&_\/\|]+?)\s+(\d+(?:\.\d{1,3})?)\s+([0-9,]+\.\d{2})\s+([0-9,]+\.\d{2})\s+([0-9,]+\.\d{2})\s+([0-9,]+\.\d{2})/);
+      
+      // 2. Standard row: Description HSN Qty Rate Amount
       const rowMatch = line.match(/^([A-Za-z0-9\s\-\.]+?)\s+(\d{4,8})?\s*(\d+(?:\.\d+)?)\s+([0-9,]+\.[0-9]{2})\s+([0-9,]+\.[0-9]{2})$/);
       
-      // 2. Textile row: [SrNo] Description HSN TAKA MTRS Rate Amount
+      // 3. Textile row: [SrNo] Description HSN TAKA MTRS Rate Amount
       const textileRowMatch = line.match(/^(?:\d+)?\s*([A-Za-z0-9\s\-\.]+?)\s+(\d{4,8})?\s+(\d+(?:\.\d+)?)\s+([0-9,]+(?:\.\d{2})?)\s+([0-9,]+\.[0-9]{2})\s+([0-9,]+\.[0-9]{2})$/);
       
-      // 3. Glued text row (when pdf-parse drops spaces): DescMTRSRATEAMOUNTTAKAhsn
+      // 4. Glued text row (when pdf-parse drops spaces): DescMTRSRATEAMOUNTTAKAhsn
       const gluedRowMatch = line.match(/^([A-Za-z\s\&]+?)(\d+\.\d{2})(\d+\.\d{2})([0-9,]+\.\d{2})(\d+)(\d{4,8})$/i);
       
       let desc, qty, rate, amount;
-      if (gluedRowMatch) {
+      if (specificRowMatch) {
+        desc = specificRowMatch[1].trim();
+        qty = cleanAmount(specificRowMatch[2]);
+        rate = cleanAmount(specificRowMatch[3]);
+        // specificRowMatch[4] is Discount, [5] is Amount
+        amount = cleanAmount(specificRowMatch[5]);
+      } else if (gluedRowMatch) {
         desc = gluedRowMatch[1].trim();
         qty = cleanAmount(gluedRowMatch[2]);
         rate = cleanAmount(gluedRowMatch[3]);
@@ -174,6 +184,8 @@ export function extractDeterministicFields(text: string): Partial<InvoiceData> {
         item.taxable = item.igstAmount + item.cgstAmount + item.sgstAmount;
         item.totalInvoiceAmount = baseAmount;
       }
+      // Add round off to the last item
+      extracted.items[extracted.items.length - 1].roundOffAmount = taxTotals.roundOff || 0;
     }
   }
 
@@ -195,7 +207,7 @@ export function extractDeterministicFields(text: string): Partial<InvoiceData> {
       cgstAmount: cgst,
       sgstAmount: sgst,
       totalInvoiceAmount: baseValue,
-      roundOffAmount: 0
+      roundOffAmount: taxTotals.roundOff || 0
     });
   }
 
