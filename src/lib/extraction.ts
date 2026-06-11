@@ -71,19 +71,6 @@ export function extractDeterministicFields(text: string): Partial<InvoiceData> {
     extracted.buyerState = stateMatch[1].split(/[\r\n]/)[0].trim();
   }
 
-  // 5. Total Aggregations
-  const totalMatch = text.match(/(?:Grand\s+Total|Total\s+Invoice\s+Value|Net\s+Amount|Total\s+Amount|Total)[\s:]*(?:Rs\.?|INR|\u20B9)?\s*([0-9,]+\.[0-9]{2})/i);
-  let grandTotal = 0;
-  if (totalMatch) {
-    grandTotal = cleanAmount(totalMatch[1]);
-  } else {
-    // Fallback: look for the last currency-like number near the bottom
-    const allAmounts = text.match(/[0-9,]{3,}\.[0-9]{2}/g);
-    if (allAmounts && allAmounts.length > 0) {
-      grandTotal = cleanAmount(allAmounts[allAmounts.length - 1]);
-    }
-  }
-
   function extractMaxTax(keyword: string): number {
     // Look for the tax keyword, followed by up to 25 non-digit characters, then grab the amount.
     // This allows it to work even if there's " @ 2.5%" or a newline between them.
@@ -93,14 +80,6 @@ export function extractDeterministicFields(text: string): Partial<InvoiceData> {
     const amounts = matches.map(m => cleanAmount(m[1]));
     return Math.max(...amounts);
   }
-
-  const taxTotals = {
-    igst: extractMaxTax('IGST'),
-    cgst: extractMaxTax('CGST'),
-    sgst: extractMaxTax('SGST|UTGST'),
-    taxable: cleanAmount(text.match(/(?:Total\s+Taxable\s+Value|Total\s+Value|Taxable\s+Amount|Taxable|Basic\s+Amount)[^\d]{0,25}?([0-9,]+\.[0-9]{2})/i)?.[1]),
-    roundOff: cleanAmount(text.match(/(?:Round\s*off|Roundoff)[^\d\-]{0,25}?([\-0-9,]+\.[0-9]{2})/i)?.[1])
-  };
 
   // 6. Line Item Parsing (Heuristic Table Parser)
   // Scan every line for a line item signature. We don't rely on 'inTable' because headers vary wildly.
@@ -168,28 +147,7 @@ export function extractDeterministicFields(text: string): Partial<InvoiceData> {
     }
   }
 
-  if (parsedItems > 0 && extracted.items && extracted.items.length > 0) {
-    // Distribute taxes across parsed items proportionally to their base amount
-    const totalTaxableBase = extracted.items.reduce((sum, item) => sum + (item.taxable || 0), 0);
-    if (totalTaxableBase > 0) {
-      for (const item of extracted.items) {
-        const baseAmount = item.taxable || 0;
-        const ratio = baseAmount / totalTaxableBase;
-        
-        item.igstAmount = Number(((taxTotals.igst || 0) * ratio).toFixed(2));
-        item.cgstAmount = Number(((taxTotals.cgst || 0) * ratio).toFixed(2));
-        item.sgstAmount = Number(((taxTotals.sgst || 0) * ratio).toFixed(2));
-        
-        // Custom Tally mapper requirements as requested by the user:
-        // 'taxable' column should be the sum of taxes
-        // 'totalInvoiceAmount' column should be the base amount
-        item.taxable = Number((item.igstAmount + item.cgstAmount + item.sgstAmount).toFixed(2));
-        item.totalInvoiceAmount = baseAmount;
-      }
-      // Add round off to the last item
-      extracted.items[extracted.items.length - 1].roundOffAmount = taxTotals.roundOff || 0;
-    }
-  }
+
 
   // 7. Global Regex Fallback for Line Items
   // If line-by-line parsing failed because of PDF formatting, we run a global search
