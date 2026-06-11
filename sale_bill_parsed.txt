@@ -1,0 +1,638 @@
+
+
+Generated using  https://hisab.co
+RADHIKA FABRICS
+61-62, SHUBHAM INDUSTRIAL-1, SANIYA HEMAD CHORYASI, Surat, 
+395006, Gujarat
+GSTIN:  24ACDPL6429K1ZH
+PAN: ACDPL6429K
+Bill To: VISHWAS ENTERPRISE
+PLOT NO-40, GROUND FLOOR, JAY AMBE ESTATE, KADODARA ROAD, NR. 
+SHUBHAM INDUSTRIAL ESTATE, Saniya Hemad, Surat, Surat, 395006, 
+Gujarat
+Mo:    8160227223
+GSTIN:  24ABEPI6515P3ZE PAN:  ABEPI6515P
+E-Invoice IRN
+06d41d37e483c5d7
+3dda1f361f527d8ff4
+6c6bca701f7fcf8f67
+1778ced950d8
+Ack.No.
+162624477229224
+Ack. Date
+01 May 2026 14:12:00
+Invoice
+Number: RF-11
+Date: 01 May 2026
+Item Qty Rate   Discount Amount Taxes Total
+1  FABRICS 540821
+HSN: 540821   |   CREPE 44" TP-52
+5006.750 
+Mtr
+94.00 0.00   4,70,634.50 23,531.72 (5%)  4,94,166.22
+2  FABRICS 540821
+HSN: 540821   |   CREPE 44" TP-50
+5054.750 
+Mtr
+94.00 0.00   4,75,146.50 23,757.32 (5%)  4,98,903.82
+Total qty 10061.500(Mtr)
+Net Payable in Words
+Nine Lacs Ninety Three Thousand Seventy Rupees Only
+Bank detail
+BANK-:-HDFC BANK 
+BRANCH-:-SARTHANA SURAT 
+A/C NUMBER-:-99999327393005 
+IFSC CODE -:-HDFC0004693
+Basic Amount ₹ 9,45,781.00
+CGST ₹ 23,644.52
+SGST ₹ 23,644.52
+Round off ₹ -0.04
+Net payable ₹ 9,93,070.00
+Terms and Conditions
+(1) Goods once sold will not be accepted return 
+(2) In case of late payment interest 18% p.a. will be levied 
+(3) Subject to Surat Jurisdiction. E & O.E
+Receiver's Signature Authorised Signature
+
+---PAGE_BREAK---
+
+
+
+Generated using  https://hisab.co
+RADHIKA FABRICS
+61-62, SHUBHAM INDUSTRIAL-1, SANIYA HEMAD CHORYASI, Surat, 
+395006, Gujarat
+GSTIN:  24ACDPL6429K1ZH
+PAN: ACDPL6429K
+Bill To: VASU CREATION
+PLOT NO.119-120, 2nd FLOOR, SHIVA PARK SOCIETY, VARACHHA ROAD, 
+VARSHA SOCIETY, KARANJ, Surat, Surat, 395006, Gujarat
+GSTIN:  24AJIPG1544J1ZE PAN:  AJIPG1544J
+E-Invoice IRN
+5d012a8e13464113
+547cd72845de07d0
+bc56f2228f4005216
+67197b12ec1e9ed
+Ack.No.
+162624508864055
+Ack. Date
+04 May 2026 16:31:00
+Invoice
+Number: RF-12
+Date: 04 May 2026
+Due on: 02 Aug 2026
+Item Qty Rate   Discount Amount Taxes Total
+1  FABRICS 540821
+HSN: 540821   |   CREPE 44" TP-50 HEAVY
+4895.500 
+Mtr
+92.00 0.00   4,50,386.00 22,519.30 (5%)  4,72,905.30
+Total qty 4895.500(Mtr)
+Net Payable in Words
+Four Lacs Seventy Two Thousand Nine Hundred Five Rupees Only
+Bank detail
+BANK-:-HDFC BANK 
+BRANCH-:-SARTHANA SURAT 
+A/C NUMBER-:-99999327393005 
+IFSC CODE -:-HDFC0004693
+Basic Amount ₹ 4,50,386.00
+CGST ₹ 11,259.65
+SGST ₹ 11,259.65
+Round off ₹ -0.30
+Net payable ₹ 4,72,905.00
+Terms and Conditions
+(1) Goods once sold will not be accepted return 
+(2) In case of late payment interest 18% p.a. will be levied 
+(3) Subject to Surat Jurisdiction. E & O.E
+Receiver's Signature Authorised Signature
+
+---PAGE_BREAK---
+
+
+
+Generated using  https://hisab.co
+RADHIKA FABRICS
+61-62, SHUBHAM INDUSTRIAL-1, SANIYA HEMAD CHORYASI, Surat, 
+395006, Gujarat
+GSTIN:  24ACDPL6429K1ZH
+PAN: ACDPL6429K
+Bill To: MARUTI CREATION
+MILKAT NO. 768 OT MAKAN NO. 68/1, MAIN BAZAR, AT. KEVDI, TAL. 
+UMARPADA, Kevdi Sharda, Surat, 394445, Gujarat
+Mo:    9328778099
+GSTIN:  24ASGPK0177L1ZN PAN:  ASGPK0177L
+E-Invoice IRN
+15f3c6ab4b14ed51a
+8b19f1d00b7c2c263
+b91699c40da93236
+3f520b8ddd399b
+Ack.No.
+162624521723997
+Ack. Date
+05 May 2026 16:07:00
+Invoice
+Number: RF-13
+Date: 05 May 2026
+Item Qty Rate   Discount Amount Taxes Total
+1  FABRICS 540821
+HSN: 540821   |   CREPE 44" TP-36
+3656.000 
+Mtr
+92.00 0.00   3,36,352.00 16,817.60 (5%)  3,53,169.60
+Total qty 3656.000(Mtr)
+Net Payable in Words
+Three Lacs Fifty Three Thousand One Hundred Seventy Rupees Only
+Bank detail
+BANK-:-HDFC BANK 
+BRANCH-:-SARTHANA SURAT 
+A/C NUMBER-:-99999327393005 
+IFSC CODE -:-HDFC0004693
+Basic Amount ₹ 3,36,352.00
+CGST ₹ 8,408.80
+SGST ₹ 8,408.80
+Round off ₹ 0.40
+Net payable ₹ 3,53,170.00
+Terms and Conditions
+(1) Goods once sold will not be accepted return 
+(2) In case of late payment interest 18% p.a. will be levied 
+(3) Subject to Surat Jurisdiction. E & O.E
+Receiver's Signature Authorised Signature
+
+---PAGE_BREAK---
+
+
+
+Generated using  https://hisab.co
+RADHIKA FABRICS
+61-62, SHUBHAM INDUSTRIAL-1, SANIYA HEMAD CHORYASI, Surat, 
+395006, Gujarat
+GSTIN:  24ACDPL6429K1ZH
+PAN: ACDPL6429K
+Bill To: SHIVAY FASHION
+Plot No.-15, Ground Floor, Siddharth Business Park, Opp. Resham Bhavan, 
+Kumbharia Gam, Bombay Market, Surat, Surat, 395006, Gujarat
+Mo:    9819189598
+GSTIN:  24AFMFS5648P1Z3 PAN:  AFMFS5648P
+E-Invoice IRN
+654f08ab324b4e869
+d8d1512659116fed3
+8d8a9be1ebbb37fa3
+87d7827e488b0
+Ack.No.
+162624532646126
+Ack. Date
+06 May 2026 14:10:00
+Invoice
+Number: RF-14
+Date: 06 May 2026
+Item Qty Rate    Discount Amount Taxes Total
+1  FABRICS 540821
+HSN: 540821   |   103.75+98+95+90+88+91+98.7
+5+96+93+98+84+89
+1124.500 
+Mtr
+93.00 0.00    1,04,578.50 5,228.92 (5%)  1,09,807.42
+Total qty 1124.500(Mtr)
+Net Payable in Words
+One Lacs Nine Thousand Eight Hundred Seven Rupees Only
+Bank detail
+BANK-:-HDFC BANK 
+BRANCH-:-SARTHANA SURAT 
+A/C NUMBER-:-99999327393005 
+IFSC CODE -:-HDFC0004693
+Basic Amount ₹ 1,04,578.50
+CGST ₹ 2,614.46
+SGST ₹ 2,614.46
+Round off ₹ -0.42
+Net payable ₹ 1,09,807.00
+Terms and Conditions
+(1) Goods once sold will not be accepted return 
+(2) In case of late payment interest 18% p.a. will be levied 
+(3) Subject to Surat Jurisdiction. E & O.E
+Receiver's Signature Authorised Signature
+
+---PAGE_BREAK---
+
+
+
+Generated using  https://hisab.co
+RADHIKA FABRICS
+61-62, SHUBHAM INDUSTRIAL-1, SANIYA HEMAD CHORYASI, Surat, 
+395006, Gujarat
+GSTIN:  24ACDPL6429K1ZH
+PAN: ACDPL6429K
+Bill To: VISHWAS ENTERPRISE
+PLOT NO-40, GROUND FLOOR, JAY AMBE ESTATE, KADODARA ROAD, NR. 
+SHUBHAM INDUSTRIAL ESTATE, Saniya Hemad, Surat, Surat, 395006, 
+Gujarat
+Mo:    8160227223
+GSTIN:  24ABEPI6515P3ZE PAN:  ABEPI6515P
+E-Invoice IRN
+2ed747709c4c830b8
+9f287b693db194f29
+ef7837a4e4b1db3d2
+91816a5ddb774
+Ack.No.
+162624585523168
+Ack. Date
+11 May 2026 14:44:00
+Invoice
+Number: RF-15
+Date: 11 May 2026
+Item Qty Rate   Discount Amount Taxes Total
+1  FABRICS 540821
+HSN: 540821   |   CREPE 44" TP54
+4989.500 
+Mtr
+94.00 0.00   4,69,013.00 23,450.66 (5%)  4,92,463.66
+Total qty 4989.500(Mtr)
+Net Payable in Words
+Four Lacs Ninety Two Thousand Four Hundred Sixty Four Rupees Only
+Bank detail
+BANK-:-HDFC BANK 
+BRANCH-:-SARTHANA SURAT 
+A/C NUMBER-:-99999327393005 
+IFSC CODE -:-HDFC0004693
+Basic Amount ₹ 4,69,013.00
+CGST ₹ 11,725.33
+SGST ₹ 11,725.33
+Round off ₹ 0.34
+Net payable ₹ 4,92,464.00
+Terms and Conditions
+(1) Goods once sold will not be accepted return 
+(2) In case of late payment interest 18% p.a. will be levied 
+(3) Subject to Surat Jurisdiction. E & O.E
+Receiver's Signature Authorised Signature
+
+---PAGE_BREAK---
+
+
+
+Generated using  https://hisab.co
+RADHIKA FABRICS
+61-62, SHUBHAM INDUSTRIAL-1, SANIYA HEMAD CHORYASI, Surat, 
+395006, Gujarat
+GSTIN:  24ACDPL6429K1ZH
+PAN: ACDPL6429K
+Bill To: VISHWAS ENTERPRISE
+PLOT NO-40, GROUND FLOOR, JAY AMBE ESTATE, KADODARA ROAD, NR. 
+SHUBHAM INDUSTRIAL ESTATE, Saniya Hemad, Surat, Surat, 395006, 
+Gujarat
+Mo:    8160227223
+GSTIN:  24ABEPI6515P3ZE PAN:  ABEPI6515P
+E-Invoice IRN
+3be931a2cd9a64ab7
+5314ce7125f8e68fd
+8c2afec404460878b
+81e4c6348c89a
+Ack.No.
+162624650997924
+Ack. Date
+18 May 2026 14:34:00
+Invoice
+Number: RF-16
+Date: 18 May 2026
+Item Qty Rate   Discount Amount Taxes Total
+1  FABRICS 540821
+HSN: 540821   |   CREPE 44" TP-53
+5043.000 
+Mtr
+94.00 0.00   4,74,042.00 23,702.10 (5%)  4,97,744.10
+Total qty 5043.000(Mtr)
+Net Payable in Words
+Four Lacs Ninety Seven Thousand Seven Hundred Forty Four Rupees Only
+Bank detail
+BANK-:-HDFC BANK 
+BRANCH-:-SARTHANA SURAT 
+A/C NUMBER-:-99999327393005 
+IFSC CODE -:-HDFC0004693
+Basic Amount ₹ 4,74,042.00
+CGST ₹ 11,851.05
+SGST ₹ 11,851.05
+Round off ₹ -0.10
+Net payable ₹ 4,97,744.00
+Terms and Conditions
+(1) Goods once sold will not be accepted return 
+(2) In case of late payment interest 18% p.a. will be levied 
+(3) Subject to Surat Jurisdiction. E & O.E
+Receiver's Signature Authorised Signature
+
+---PAGE_BREAK---
+
+
+
+Generated using  https://hisab.co
+RADHIKA FABRICS
+61-62, SHUBHAM INDUSTRIAL-1, SANIYA HEMAD CHORYASI, Surat, 
+395006, Gujarat
+GSTIN:  24ACDPL6429K1ZH
+PAN: ACDPL6429K
+Bill To: VISHWAS ENTERPRISE
+PLOT NO-40, GROUND FLOOR, JAY AMBE ESTATE, KADODARA ROAD, NR. 
+SHUBHAM INDUSTRIAL ESTATE, Saniya Hemad, Surat, Surat, 395006, 
+Gujarat
+Mo:    8160227223
+GSTIN:  24ABEPI6515P3ZE PAN:  ABEPI6515P
+E-Invoice IRN
+e5d1f3ae0f4465f2dc
+79b51168ecb08d5d
+6e8b7aa22449bc2a4
+22d373818b07d
+Ack.No.
+162624651042823
+Ack. Date
+18 May 2026 14:38:00
+Invoice
+Number: RF-17
+Date: 18 May 2026
+Item Qty Rate   Discount Amount Taxes Total
+1  FABRICS 540821
+HSN: 540821   |   CREPE 44" TP-52
+5035.250 
+Mtr
+94.00 0.00   4,73,313.50 23,665.68 (5%)  4,96,979.18
+Total qty 5035.250(Mtr)
+Net Payable in Words
+Four Lacs Ninety Six Thousand Nine Hundred Seventy Nine Rupees Only
+Bank detail
+BANK-:-HDFC BANK 
+BRANCH-:-SARTHANA SURAT 
+A/C NUMBER-:-99999327393005 
+IFSC CODE -:-HDFC0004693
+Basic Amount ₹ 4,73,313.50
+CGST ₹ 11,832.84
+SGST ₹ 11,832.84
+Round off ₹ -0.18
+Net payable ₹ 4,96,979.00
+Terms and Conditions
+(1) Goods once sold will not be accepted return 
+(2) In case of late payment interest 18% p.a. will be levied 
+(3) Subject to Surat Jurisdiction. E & O.E
+Receiver's Signature Authorised Signature
+
+---PAGE_BREAK---
+
+
+
+Generated using  https://hisab.co
+RADHIKA FABRICS
+61-62, SHUBHAM INDUSTRIAL-1, SANIYA HEMAD CHORYASI, Surat, 
+395006, Gujarat
+GSTIN:  24ACDPL6429K1ZH
+PAN: ACDPL6429K
+Bill To: VISHWAS ENTERPRISE
+PLOT NO-40, GROUND FLOOR, JAY AMBE ESTATE, KADODARA ROAD, NR. 
+SHUBHAM INDUSTRIAL ESTATE, Saniya Hemad, Surat, Surat, 395006, 
+Gujarat
+Mo:    8160227223
+GSTIN:  24ABEPI6515P3ZE PAN:  ABEPI6515P
+E-Invoice IRN
+3f019effd21331a20a
+1dd95aa523322fc96
+1738703ae6e6e6a12
+f1acfb98cfb5
+Ack.No.
+162624716341632
+Ack. Date
+25 May 2026 11:18:00
+Invoice
+Number: RF-18
+Date: 25 May 2026
+Item Qty Rate   Discount Amount Taxes Total
+1  FABRICS 540821
+HSN: 540821   |   TP 58
+5007.250 
+Mtr
+94.00 0.00   4,70,681.50 23,534.08 (5%)  4,94,215.58
+Total qty 5007.250(Mtr)
+Net Payable in Words
+Four Lacs Ninety Four Thousand Two Hundred Sixteen Rupees Only
+Bank detail
+BANK-:-HDFC BANK 
+BRANCH-:-SARTHANA SURAT 
+A/C NUMBER-:-99999327393005 
+IFSC CODE -:-HDFC0004693
+Basic Amount ₹ 4,70,681.50
+CGST ₹ 11,767.04
+SGST ₹ 11,767.04
+Round off ₹ 0.42
+Net payable ₹ 4,94,216.00
+Terms and Conditions
+(1) Goods once sold will not be accepted return 
+(2) In case of late payment interest 18% p.a. will be levied 
+(3) Subject to Surat Jurisdiction. E & O.E
+Receiver's Signature Authorised Signature
+
+---PAGE_BREAK---
+
+
+
+Generated using  https://hisab.co
+RADHIKA FABRICS
+61-62, SHUBHAM INDUSTRIAL-1, SANIYA HEMAD CHORYASI, Surat, 
+395006, Gujarat
+GSTIN:  24ACDPL6429K1ZH
+PAN: ACDPL6429K
+Bill To: VISHWAS ENTERPRISE
+PLOT NO-40, GROUND FLOOR, JAY AMBE ESTATE, KADODARA ROAD, NR. 
+SHUBHAM INDUSTRIAL ESTATE, Saniya Hemad, Surat, Surat, 395006, 
+Gujarat
+Mo:    8160227223
+GSTIN:  24ABEPI6515P3ZE PAN:  ABEPI6515P
+E-Invoice IRN
+88e471320178d01b
+6c44a8dad8335b9b
+d2a782afc20b8dd91
+cfa06001d451447
+Ack.No.
+162624752820207
+Ack. Date
+28 May 2026 12:08:00
+Invoice
+Number: RF-19
+Date: 28 May 2026
+Item Qty Rate   Discount Amount Taxes Total
+1  FABRICS 540821
+HSN: 540821   |   TP-55
+5025.750 
+Mtr
+94.00 0.00   4,72,420.50 23,621.02 (5%)  4,96,041.52
+Total qty 5025.750(Mtr)
+Net Payable in Words
+Four Lacs Ninety Six Thousand Forty Two Rupees Only
+Bank detail
+BANK-:-HDFC BANK 
+BRANCH-:-SARTHANA SURAT 
+A/C NUMBER-:-99999327393005 
+IFSC CODE -:-HDFC0004693
+Basic Amount ₹ 4,72,420.50
+CGST ₹ 11,810.51
+SGST ₹ 11,810.51
+Round off ₹ 0.48
+Net payable ₹ 4,96,042.00
+Terms and Conditions
+(1) Goods once sold will not be accepted return 
+(2) In case of late payment interest 18% p.a. will be levied 
+(3) Subject to Surat Jurisdiction. E & O.E
+Receiver's Signature Authorised Signature
+
+---PAGE_BREAK---
+
+
+
+Generated using  https://hisab.co
+RADHIKA FABRICS
+61-62, SHUBHAM INDUSTRIAL-1, SANIYA HEMAD CHORYASI, Surat, 
+395006, Gujarat
+GSTIN:  24ACDPL6429K1ZH
+PAN: ACDPL6429K
+Bill To: VASU CREATION
+PLOT NO.119-120, 2nd FLOOR, SHIVA PARK SOCIETY, VARACHHA ROAD, 
+VARSHA SOCIETY, KARANJ, Surat, Surat, 395006, Gujarat
+GSTIN:  24AJIPG1544J1ZE PAN:  AJIPG1544J
+E-Invoice IRN
+37a73a64f666563e3
+4100d4dc04d5e156
+34933b61dbca3667
+bde2eca112c1c50
+Ack.No.
+162624755074030
+Ack. Date
+28 May 2026 14:42:00
+Invoice
+Number: RF-20
+Date: 28 May 2026
+Due on: 26 Aug 2026
+Item Qty Rate    Discount Amount Taxes Total
+1  FABRICS 540821
+HSN: 540821   |   PORTER
+103.000 Mtr 94.00 0.00 9,682.00 484.10 (5%)    10,166.10
+Total qty 103.000(Mtr)
+Net Payable in Words
+Ten Thousand One Hundred Sixty Six Rupees Only
+Bank detail
+BANK-:-HDFC BANK 
+BRANCH-:-SARTHANA SURAT 
+A/C NUMBER-:-99999327393005 
+IFSC CODE -:-HDFC0004693
+Basic Amount ₹ 9,682.00
+CGST ₹ 242.05
+SGST ₹ 242.05
+Round off ₹ -0.10
+Net payable ₹ 10,166.00
+Terms and Conditions
+(1) Goods once sold will not be accepted return 
+(2) In case of late payment interest 18% p.a. will be levied 
+(3) Subject to Surat Jurisdiction. E & O.E
+Receiver's Signature Authorised Signature
+
+---PAGE_BREAK---
+
+
+
+Generated using  https://hisab.co
+RADHIKA FABRICS
+61-62, SHUBHAM INDUSTRIAL-1, SANIYA HEMAD CHORYASI, Surat, 
+395006, Gujarat
+GSTIN:  24ACDPL6429K1ZH
+PAN: ACDPL6429K
+Bill To: MARUTI CREATION
+MILKAT NO. 768 OT MAKAN NO. 68/1, MAIN BAZAR, AT. KEVDI, TAL. 
+UMARPADA, Kevdi Sharda, Surat, 394445, Gujarat
+Mo:    9328778099
+GSTIN:  24ASGPK0177L1ZN PAN:  ASGPK0177L
+E-Invoice IRN
+725fa840a9cc60b8b
+b66431105c00f31fdf
+d7b105a626484419
+5cd0468f8f913
+Ack.No.
+162624755438654
+Ack. Date
+28 May 2026 15:05:00
+Invoice
+Number: RF-21
+Date: 28 May 2026
+Item Qty Rate   Discount Amount Taxes Total
+1  FABRICS 540821
+HSN: 540821   |   CREPE 44" TP-25
+2414.900 
+Mtr
+94.00 0.00   2,27,000.60 11,350.04 (5%)  2,38,350.64
+Total qty 2414.900(Mtr)
+Net Payable in Words
+Two Lacs Thirty Eight Thousand Three Hundred Fifty One Rupees Only
+Bank detail
+BANK-:-HDFC BANK 
+BRANCH-:-SARTHANA SURAT 
+A/C NUMBER-:-99999327393005 
+IFSC CODE -:-HDFC0004693
+Basic Amount ₹ 2,27,000.60
+CGST ₹ 5,675.02
+SGST ₹ 5,675.02
+Round off ₹ 0.36
+Net payable ₹ 2,38,351.00
+Terms and Conditions
+(1) Goods once sold will not be accepted return 
+(2) In case of late payment interest 18% p.a. will be levied 
+(3) Subject to Surat Jurisdiction. E & O.E
+Receiver's Signature Authorised Signature
+
+---PAGE_BREAK---
+
+
+
+Generated using  https://hisab.co
+RADHIKA FABRICS
+61-62, SHUBHAM INDUSTRIAL-1, SANIYA HEMAD CHORYASI, Surat, 
+395006, Gujarat
+GSTIN:  24ACDPL6429K1ZH
+PAN: ACDPL6429K
+Bill To: VASU CREATION
+PLOT NO.119-120, 2nd FLOOR, SHIVA PARK SOCIETY, VARACHHA ROAD, 
+VARSHA SOCIETY, KARANJ, Surat, Surat, 395006, Gujarat
+GSTIN:  24AJIPG1544J1ZE PAN:  AJIPG1544J
+E-Invoice IRN
+996c1f08889c78594
+ac270f1c8b8046cdc
+686bb5f76cdab464c
+5b78f9bb7f245
+Ack.No.
+162624783047950
+Ack. Date
+30 May 2026 16:58:00
+Invoice
+Number: RF-22
+Date: 30 May 2026
+Due on: 28 Aug 2026
+Item Qty Rate Discount Amount Taxes Total
+1  FABRICS 540821
+HSN: 540821   |   CREPE 44" TP-48
+4927.500 
+Mtr
+92.00 22,666.50 (5%)   4,30,663.50 21,533.18 (5%) 4,52,196.68
+2  FABRICS 540821
+HSN: 540821   |   DOLLA 44" TP-6
+625.000 Mtr 79.00  2,468.75 (5%) 46,906.25  2,345.32 (5%)  49,251.57
+Total qty 5552.500(Mtr)
+Net Payable in Words
+Five Lacs One Thousand Four Hundred Forty Eight Rupees Only
+Bank detail
+BANK-:-HDFC BANK 
+BRANCH-:-SARTHANA SURAT 
+A/C NUMBER-:-99999327393005 
+IFSC CODE -:-HDFC0004693
+Basic Amount ₹ 5,02,705.00
+Discount ₹ -25,135.25
+CGST ₹ 11,939.25
+SGST ₹ 11,939.25
+Round off ₹ -0.25
+Net payable ₹ 5,01,448.00
+Terms and Conditions
+(1) Goods once sold will not be accepted return 
+(2) In case of late payment interest 18% p.a. will be levied 
+(3) Subject to Surat Jurisdiction. E & O.E
+Receiver's Signature Authorised Signature
+
+---PAGE_BREAK---
+

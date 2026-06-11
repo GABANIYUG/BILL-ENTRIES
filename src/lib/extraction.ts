@@ -74,21 +74,40 @@ export function extractDeterministicFields(textStandard: string, textMerged: str
   }
 
   function extractMaxTax(keyword: string): number {
-    // Look for the tax keyword, followed by up to 25 non-digit characters, then grab the amount.
-    // This allows it to work even if there's " @ 2.5%" or a newline between them.
-    const regex = new RegExp(`(?:${keyword})[^\\d]{0,25}?([0-9,]+\\.[0-9]{2})`, 'gi');
-    const matches = Array.from(text.matchAll(regex));
-    if (matches.length === 0) return 0;
-    const amounts = matches.map(m => cleanAmount(m[1]));
-    return Math.max(...amounts);
+    let maxAmount = 0;
+    
+    // Helper to search a specific text string
+    const searchInText = (targetText: string) => {
+      const lines = targetText.split('\n');
+      for (const line of lines) {
+        if (new RegExp(keyword, 'i').test(line)) {
+          // Find all amounts on this line
+          const amounts = Array.from(line.matchAll(/([0-9,]+\.[0-9]{2})/g)).map(m => cleanAmount(m[1]));
+          if (amounts.length > 0) {
+            // usually the last amount is the total tax
+            const amt = amounts[amounts.length - 1];
+            if (amt > maxAmount) maxAmount = amt;
+          }
+        }
+      }
+    };
+
+    searchInText(textStandard);
+    if (textMerged) {
+      searchInText(textMerged);
+    }
+    
+    return maxAmount;
   }
 
+
+
   function attemptLineItemParsing(targetText: string): number {
-    const lines = targetText.split('\n');
+    const targetLines = targetText.split('\n');
     let parsedCount = 0;
 
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim();
+    for (let i = 0; i < targetLines.length; i++) {
+      const line = targetLines[i].trim();
 
       // 1. Specific row match for Qty, Rate, Discount, Amount, Taxes
       const specificRowMatch = line.match(/^(?:\d+\s+)?([A-Za-z0-9\s\-\.\&_\/\|]+?)\s+(\d+(?:\.\d{1,3})?)\s+([0-9,]+\.\d{2})\s+([0-9,]+\.\d{2})\s+([0-9,]+\.\d{2})\s+([0-9,]+\.\d{2})/);
@@ -107,7 +126,6 @@ export function extractDeterministicFields(textStandard: string, textMerged: str
         desc = specificRowMatch[1].trim();
         qty = cleanAmount(specificRowMatch[2]);
         rate = cleanAmount(specificRowMatch[3]);
-        // specificRowMatch[4] is Discount, [5] is Amount
         amount = cleanAmount(specificRowMatch[5]);
       } else if (gluedRowMatch) {
         desc = gluedRowMatch[1].trim();
@@ -116,7 +134,6 @@ export function extractDeterministicFields(textStandard: string, textMerged: str
         amount = cleanAmount(gluedRowMatch[4]);
       } else if (textileRowMatch) {
         desc = textileRowMatch[1].trim();
-        // textileRowMatch[3] is TAKA, [4] is MTRS (Qty)
         qty = cleanAmount(textileRowMatch[4]);
         rate = cleanAmount(textileRowMatch[5]);
         amount = cleanAmount(textileRowMatch[6]);
@@ -127,7 +144,6 @@ export function extractDeterministicFields(textStandard: string, textMerged: str
         amount = cleanAmount(rowMatch[5]);
       }
       
-      // Skip if the extracted description looks like a totals row
       if (desc && desc.match(/^(?:Total|Amount|CGST|SGST|IGST|Net|Basic|Taxable|Subtotal)/i)) {
         continue;
       }
@@ -137,11 +153,11 @@ export function extractDeterministicFields(textStandard: string, textMerged: str
           itemName: desc,
           qty: qty,
           rate: rate,
-          taxable: amount, // temporary, used for ratio calculation
+          taxable: amount,
           igstAmount: 0, 
           cgstAmount: 0,
           sgstAmount: 0,
-          totalInvoiceAmount: amount, // temporary
+          totalInvoiceAmount: amount,
           roundOffAmount: 0
         });
         parsedCount++;
@@ -159,10 +175,7 @@ export function extractDeterministicFields(textStandard: string, textMerged: str
   }
 
   // 7. Global Regex Fallback for Line Items
-  // If line-by-line parsing failed because of PDF formatting, we run a global search
-  // looking for the exact sequence of numbers for this specific invoice type.
   if (parsedItems === 0 && textMerged) {
-    // Looks for: [Optional Sr No] [Item Name] [Qty] [Optional Unit] [Rate] [Optional Discount] [Amount] [Optional Taxes]
     const globalMatches = Array.from(textMerged.matchAll(/(?:^|\n)\s*(?:\d{1,3}\s+)?([A-Za-z0-9][\s\S]{4,150}?)\s+(\d+(?:\.\d{1,3})?)(?:\s+(?:Mtrs?|Pcs|Kgs?|Nos?|Units?|Mtr|Pieces|Meters|Rolls?))?\s+([0-9,]{1,8}\.\d{2})\s+(?:([0-9,]{1,8}\.\d{2})(?:\s*\(\d+%\))?\s+)?([0-9,]{1,12}\.\d{2})(?:\s+([0-9,]{1,12}\.\d{2})(?:\s*\(\d+%\))?)?/gi));
     
     for (const match of globalMatches) {
@@ -171,16 +184,14 @@ export function extractDeterministicFields(textStandard: string, textMerged: str
       
       const qty = cleanAmount(match[2]);
       const rate = cleanAmount(match[3]);
-      // match[4] is optional discount
       const amount = cleanAmount(match[5]);
-      // match[6] is optional taxes
       
       if (qty && rate && amount) {
         extracted.items?.push({
           itemName: desc,
           qty: qty,
           rate: rate,
-          taxable: amount, // temporary for ratio
+          taxable: amount,
           igstAmount: 0,
           cgstAmount: 0,
           sgstAmount: 0,
@@ -192,35 +203,39 @@ export function extractDeterministicFields(textStandard: string, textMerged: str
     }
   }
 
-    // 6. Extract Tax Totals globally as a fallback / verifier
-    const taxTotals = {
-      igst: extractMaxTax('IGST'),
-      cgst: extractMaxTax('CGST'),
-      sgst: extractMaxTax('SGST'),
-      taxable: cleanAmount(text.match(/(?:Taxable\s+Amount|Taxable|Basic\s+Amount|Total\s+Basic)[^\d\n]*([0-9,]+\.[0-9]{2})/i)?.[1]),
-      roundOff: extractMaxTax('Round\\s*off')
-    };
-    
-    // Also extract negative round off
-    const negRoundOffMatch = text.match(/Round\s*off[^\d\n\-]{0,25}(-?[0-9,]+\.[0-9]{2})/i);
-    if (negRoundOffMatch && negRoundOffMatch[1].includes('-')) {
-      taxTotals.roundOff = cleanAmount(negRoundOffMatch[1]);
-    }
-    
-    const grandTotal = cleanAmount(text.match(/(?:Grand\s+Total|Total\s+Invoice\s+Value|Net\s+payable|Net\s+Amount)[^\d\n]*([0-9,]+\.[0-9]{2})/i)?.[1]);
+  // 6. Extract Tax Totals globally as a fallback / verifier
+  const taxTotals = {
+    igst: extractMaxTax('IGST'),
+    cgst: extractMaxTax('CGST'),
+    sgst: extractMaxTax('SGST'),
+    taxable: cleanAmount(text.match(/(?:Taxable\s+Amount|Taxable|Basic\s+Amount|Total\s+Basic)[^\d\n]*([0-9,]+\.[0-9]{2})/i)?.[1]),
+    roundOff: extractMaxTax('Round\\s*off')
+  };
+  
+  // Also extract negative round off
+  const negRoundOffMatch = text.match(/Round\s*off[^\d\n\-]{0,25}(-?[0-9,]+\.[0-9]{2})/i);
+  if (negRoundOffMatch && negRoundOffMatch[1].includes('-')) {
+    taxTotals.roundOff = cleanAmount(negRoundOffMatch[1]);
+  }
+  
+  let grandTotal = cleanAmount(text.match(/(?:Grand\s+Total|Total\s+Invoice\s+Value|Net\s+payable|Net\s+Amount)[^\d\n]*([0-9,]+\.[0-9]{2})/i)?.[1]);
+  
+  // If regex fails, mathematically calculate grand total
+  if (!grandTotal && parsedItems > 0) {
+    const totalTaxable = extracted.items!.reduce((sum, i) => sum + (i.taxable || 0), 0);
+    grandTotal = Number((totalTaxable + (taxTotals.igst||0) + (taxTotals.cgst||0) + (taxTotals.sgst||0) + (taxTotals.roundOff||0)).toFixed(2));
+  }
 
-    // Apply exact invoice-level totals to each line item based on user request
-    if (parsedItems > 0 && extracted.items && extracted.items.length > 0) {
-      for (const item of extracted.items) {
-        item.igstAmount = taxTotals.igst || 0;
-        item.cgstAmount = taxTotals.cgst || 0;
-        item.sgstAmount = taxTotals.sgst || 0;
-        // User requested: "net payable is the total invoice amount"
-        item.totalInvoiceAmount = grandTotal || 0;
-        // Keep item.taxable as the line item amount (amount before taxes)
-      }
-      extracted.items[extracted.items.length - 1].roundOffAmount = taxTotals.roundOff || 0;
-    } else { }
+  // Apply exact invoice-level totals to each line item based on user request
+  if (parsedItems > 0 && extracted.items && extracted.items.length > 0) {
+    for (const item of extracted.items) {
+      item.igstAmount = taxTotals.igst || 0;
+      item.cgstAmount = taxTotals.cgst || 0;
+      item.sgstAmount = taxTotals.sgst || 0;
+      item.totalInvoiceAmount = grandTotal || 0;
+    }
+    extracted.items[extracted.items.length - 1].roundOffAmount = taxTotals.roundOff || 0;
+  } else { }
 
   // 8. Final Dummy Item Fallback
   if (parsedItems === 0) {

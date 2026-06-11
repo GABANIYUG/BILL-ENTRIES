@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { processPdfPipeline } from '@/lib/pipeline';
 import { generateTallyExcel } from '@/lib/tally-mapper';
 
+export const maxDuration = 300; // 5 minutes
+
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
