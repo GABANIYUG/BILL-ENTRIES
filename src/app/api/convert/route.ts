@@ -31,6 +31,7 @@ export async function POST(req: NextRequest) {
 
   } catch (error: unknown) {
     console.error('Convert API error:', error);
-    return NextResponse.json({ error: error.message || 'Conversion failed' }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : 'Conversion failed';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
