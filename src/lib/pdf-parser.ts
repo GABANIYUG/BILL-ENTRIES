@@ -9,8 +9,14 @@ export async function extractTextFromPdfBuffer(buffer: Buffer): Promise<string> 
       });
       let lastY, text = '';
       for (const item of textContent.items) {
-        if (lastY == item.transform[5] || !lastY) {
-          text += item.str;
+        // Allow a slight tolerance (e.g. 2 points) for Y-coordinates to account for imperfect alignments
+        if (!lastY || Math.abs(lastY - item.transform[5]) < 4) {
+          // If the items don't have natural spacing, add a space
+          if (text && !text.endsWith(' ') && item.str && !item.str.startsWith(' ') && text !== '\n') {
+            text += ' ' + item.str;
+          } else {
+            text += item.str;
+          }
         } else {
           text += '\n' + item.str;
         }
