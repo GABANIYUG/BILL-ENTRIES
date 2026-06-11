@@ -193,20 +193,20 @@ export function extractDeterministicFields(text: string): Partial<InvoiceData> {
 
   // 7. Global Regex Fallback for Line Items
   // If line-by-line parsing failed because of PDF formatting, we run a global search
-  // ignoring newlines and looking for the exact sequence of numbers for this specific invoice type.
+  // looking for the exact sequence of numbers for this specific invoice type.
   if (parsedItems === 0) {
-    const cleanText = text.replace(/\n/g, ' ');
-    // Looks for: [Item Name] [Qty] [Optional Unit like Mtr] [Rate] [Discount] [Amount] [Taxes]
-    const globalMatches = Array.from(cleanText.matchAll(/(?:([A-Za-z0-9\-\.\&_\/\|]{3,}[A-Za-z0-9\-\.\&_\/\|\s\:]{0,40}?))\s+(\d+(?:\.\d{1,3})?)(?:\s+[A-Za-z]{1,4})?\s+([0-9,]{1,8}\.\d{2})\s+([0-9,]{1,8}\.\d{2})\s+([0-9,]{1,12}\.\d{2})\s+([0-9,]{1,12}\.\d{2})/g));
+    // Looks for: [Optional Sr No] [Item Name] [Qty] [Optional Unit] [Rate] [Optional Discount] [Amount] [Optional Taxes]
+    const globalMatches = Array.from(text.matchAll(/(?:^|\n)\s*(?:\d{1,3}\s+)?([A-Za-z0-9\-\.\&_\/\|][A-Za-z0-9\-\.\&_\/\|\s\:]{5,80}?)\s+(\d+(?:\.\d{1,3})?)(?:\s+(?:Mtrs?|Pcs|Kgs?|Nos?|Units?|Mtr|Pieces|Meters|Rolls?))?\s+([0-9,]{1,8}\.\d{2})\s+(?:([0-9,]{1,8}\.\d{2})\s+)?([0-9,]{1,12}\.\d{2})(?:\s+([0-9,]{1,12}\.\d{2}))?/gi));
     
     for (const match of globalMatches) {
-      const desc = match[1].trim();
+      const desc = match[1].replace(/\n/g, ' ').trim();
       if (desc.match(/^(?:Total|Amount|CGST|SGST|IGST|Net|Basic|Taxable|Subtotal)/i)) continue;
       
       const qty = cleanAmount(match[2]);
       const rate = cleanAmount(match[3]);
-      // match[4] is discount
+      // match[4] is optional discount
       const amount = cleanAmount(match[5]);
+      // match[6] is optional taxes
       
       if (qty && rate && amount) {
         extracted.items?.push({
