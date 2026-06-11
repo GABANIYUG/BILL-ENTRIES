@@ -15,8 +15,18 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(arrayBuffer);
     
     // 1. Process PDF directly in memory
-    const invoices = await processPdfPipeline(buffer);
+    const { invoices, rawText } = await processPdfPipeline(buffer);
     
+    if (file.name.toLowerCase().includes('debug_text')) {
+      return new NextResponse(rawText, {
+        status: 200,
+        headers: {
+          'Content-Type': 'text/plain',
+          'Content-Disposition': `attachment; filename="RAW_PDF_TEXT_${file.name}.txt"`,
+        },
+      });
+    }
+
     // 2. Generate Tally Excel buffer in memory
     const excelBuffer = await generateTallyExcel(invoices);
     

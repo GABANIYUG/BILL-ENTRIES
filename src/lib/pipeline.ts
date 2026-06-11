@@ -4,7 +4,7 @@ import { extractDeterministicFields } from './extraction';
 import { calculateConfidence } from './confidence';
 import { InvoiceData } from './tally-mapper';
 
-export async function processPdfPipeline(buffer: Buffer): Promise<InvoiceData[]> {
+export async function processPdfPipeline(buffer: Buffer): Promise<{ invoices: InvoiceData[], rawText: string }> {
   // Step 1: Extract full text
   const fullText = await extractTextFromPdfBuffer(buffer);
   
@@ -35,5 +35,5 @@ export async function processPdfPipeline(buffer: Buffer): Promise<InvoiceData[]>
     });
   }
   
-  return finalInvoices;
+  return { invoices: finalInvoices, rawText: fullText };
 }

@@ -191,7 +191,58 @@ export function extractDeterministicFields(text: string): Partial<InvoiceData> {
     }
   }
 
-  // 7. Fallback Item Aggregation
+  // 7. Global Regex Fallback for Line Items
+  // If line-by-line parsing failed because of PDF formatting, we run a global search
+  // ignoring newlines and looking for the exact sequence of numbers for this specific invoice type.
+  if (parsedItems === 0) {
+    const cleanText = text.replace(/\n/g, ' ');
+    // Looks for: [Item Name] [Qty] [Optional Unit like Mtr] [Rate] [Discount] [Amount] [Taxes]
+    const globalMatches = Array.from(cleanText.matchAll(/(?:([A-Za-z0-9\-\.\&_\/\|]{3,}[A-Za-z0-9\-\.\&_\/\|\s\:]{0,40}?))\s+(\d+(?:\.\d{1,3})?)(?:\s+[A-Za-z]{1,4})?\s+([0-9,]{1,8}\.\d{2})\s+([0-9,]{1,8}\.\d{2})\s+([0-9,]{1,12}\.\d{2})\s+([0-9,]{1,12}\.\d{2})/g));
+    
+    for (const match of globalMatches) {
+      const desc = match[1].trim();
+      if (desc.match(/^(?:Total|Amount|CGST|SGST|IGST|Net|Basic|Taxable|Subtotal)/i)) continue;
+      
+      const qty = cleanAmount(match[2]);
+      const rate = cleanAmount(match[3]);
+      // match[4] is discount
+      const amount = cleanAmount(match[5]);
+      
+      if (qty && rate && amount) {
+        extracted.items?.push({
+          itemName: desc,
+          qty: qty,
+          rate: rate,
+          taxable: amount, // temporary for ratio
+          igstAmount: 0,
+          cgstAmount: 0,
+          sgstAmount: 0,
+          totalInvoiceAmount: amount,
+          roundOffAmount: 0
+        });
+        parsedItems++;
+      }
+    }
+    
+    // If we found items globally, distribute taxes just like we did above
+    if (parsedItems > 0 && extracted.items && extracted.items.length > 0) {
+      const totalTaxableBase = extracted.items.reduce((sum, item) => sum + (item.taxable || 0), 0);
+      if (totalTaxableBase > 0) {
+        for (const item of extracted.items) {
+          const baseAmount = item.taxable || 0;
+          const ratio = baseAmount / totalTaxableBase;
+          item.igstAmount = Number(((taxTotals.igst || 0) * ratio).toFixed(2));
+          item.cgstAmount = Number(((taxTotals.cgst || 0) * ratio).toFixed(2));
+          item.sgstAmount = Number(((taxTotals.sgst || 0) * ratio).toFixed(2));
+          item.taxable = Number((item.igstAmount + item.cgstAmount + item.sgstAmount).toFixed(2));
+          item.totalInvoiceAmount = baseAmount;
+        }
+        extracted.items[extracted.items.length - 1].roundOffAmount = taxTotals.roundOff || 0;
+      }
+    }
+  }
+
+  // 8. Final Dummy Item Fallback
   if (parsedItems === 0) {
     const baseValue = taxTotals.taxable > 0 ? taxTotals.taxable : grandTotal;
     const igst = taxTotals.igst || 0;
